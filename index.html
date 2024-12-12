@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قسم سيارات</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            color: #ffffff;
+        }
+
+        header {
+            background-color: #ac0000;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #ac0000;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.199);
+            overflow: hidden;
+        }
+
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #ac0000;
+        }
+
+        .message {
+            margin-bottom: 15px;
+        }
+
+        .message .user {
+            font-weight: bold;
+            color: #000000;
+        }
+
+        .message .text {
+            margin: 5px 0;
+        }
+
+        .message .time {
+            font-size: 0.8em;
+            color: #000000;
+        }
+
+        .input-container {
+            display: flex;
+            padding: 10px;
+            background-color: #6b0000;
+            border-top: 1px solid #ddd;
+        }
+
+        .input-container input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #000000;
+            border-radius: 5px;
+            font-size: 1em;
+            margin-right: 10px;
+        }
+
+        .input-container button {
+            padding: 10px 20px;
+            background-color: #ac0000;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .input-container button:hover {
+            background-color: #ff0000;
+        }
+
+        .input-container input[type="file"] {
+            display: none;
+        }
+
+        .input-container label {
+            padding: 10px 20px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-left: 10px;
+        }
+
+        .input-container label:hover {
+            background-color: #218838;
+        }
+
+        .profile-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 800px;
+            background-color: #ac0000;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.349);
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-container input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #000000;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .profile-container button {
+            padding: 10px 20px;
+            background-color: #000000;
+            border: none;
+            border-radius: 5px;
+            color: #ac0000;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .profile-container button:hover {
+            background-color: #ac0000;
+        }
+
+        .visit-profile-button {
+            background-color: #720202;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .visit-profile-button:hover {
+            background-color: #500000;
+        }
+
+        .bot-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ac0000;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .bot-chat {
+            display: none;
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 300px;
+            background-color: rgb(0, 0, 0);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .bot-header {
+            background-color: #ac0000;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .bot-messages {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #ac0000;
+        }
+
+        .bot-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .bot-input input {
+            flex: 1;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .bot-input button {
+            padding: 5px 10px;
+            margin-left: 5px;
+            background-color: #ac0000;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            #voiceButton {
+    padding: 10px 20px;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s;
+}
+
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>دردشة | قسم سيارات</h1>
+    </header>
+
+    <div class="profile-container" id="profileContainer">
+        <h2>صنع حساب</h2>
+        <input type="text" id="profileName" placeholder="اضف اسمك...">
+        <input type="file" id="profilePicture" accept="image/*">
+        <button onclick="createProfile()">صنع حساب</button>
+    </div>
+
+
+    <div class="chat-container" style="display:none;" id="chatContainer">
+        <div class="messages" id="messages">
+            <!-- Messages will appear here -->
+        </div>
+
+        <div class="input-container">
+            <input type="text" id="messageInput" placeholder="أكتب رسالة...">
+            <button onclick="sendMessage()">أرسال</button>
+            <input type="file" id="imageInput" accept="image/*" onchange="sendImage()">
+            <label for="imageInput">أرسال صور</label>
+        </div>
+        
+        
+    </div>
+
+    <div class="bot-chat" id="botChat">
+        <div class="bot-header">بوت مساعدة</div>
+        <div class="bot-messages" id="botMessages"></div>
+        <div class="bot-input">
+            <input type="text" id="botInput" placeholder="Ask me anything...">
+            <button onclick="sendBotMessage()">أرسال</button>
+        </div>
+    </div>
+
+    <button class="bot-button" onclick="toggleBotChat()">💬</button>
+
+    <script>
+        const messagesContainer = document.getElementById('messages');
+
+        let currentUserProfile = {
+            name: '',
+            picture: ''
+        };
+
+        function createProfile() {
+            const profileName = document.getElementById('profileName').value.trim();
+            const profilePicture = document.getElementById('profilePicture').files[0];
+
+            if (!profileName) {
+                alert('Please enter your name.');
+                return;
+            }
+
+            if (!profilePicture) {
+                alert('Please upload a profile picture.');
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                currentUserProfile.name = profileName;
+                currentUserProfile.picture = event.target.result;
+
+                const profileContainer = document.getElementById('profileContainer');
+                const chatContainer = document.getElementById('chatContainer');
+
+                profileContainer.style.display = 'none';
+                chatContainer.style.display = 'flex';
+
+                alert(`مرحبا, ${profileName}!`);
+            };
+
+            reader.readAsDataURL(profilePicture);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const messageText = input.value.trim();
+
+            if (messageText === '') return;
+
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+
+            const userElement = document.createElement('span');
+            userElement.classList.add('user');
+            userElement.textContent = 'You';
+
+            const textElement = document.createElement('div');
+            textElement.classList.add('text');
+            textElement.textContent = messageText;
+
+            const timeElement = document.createElement('div');
+            timeElement.classList.add('time');
+            timeElement.textContent = new Date().toLocaleTimeString();
+
+            const visitProfileButton = document.createElement('button');
+            visitProfileButton.classList.add('visit-profile-button');
+            visitProfileButton.textContent = 'Visit Profile';
+            visitProfileButton.onclick = function() {
+                alert(`Name: ${currentUserProfile.name}`);
+            };
+
+            messageElement.appendChild(userElement);
+            messageElement.appendChild(textElement);
+            messageElement.appendChild(timeElement);
+            messageElement.appendChild(visitProfileButton);
+
+            messagesContainer.appendChild(messageElement);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            input.value = '';
+        }
+
+        function sendImage() {
+            const imageInput = document.getElementById('imageInput');
+            const file = imageInput.files[0];
+
+            if (!file) return;
+
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                const imageUrl = event.target.result;
+
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message');
+
+                const userElement = document.createElement('span');
+                userElement.classList.add('user');
+                userElement.textContent = 'You';
+
+                const imageElement = document.createElement('img');
+                imageElement.src = imageUrl;
+                imageElement.style.maxWidth = '100%';
+                imageElement.style.borderRadius = '10px';
+                imageElement.style.marginTop = '10px';
+
+                const timeElement = document.createElement('div');
+                timeElement.classList.add('time');
+                timeElement.textContent = new Date().toLocaleTimeString();
+
+                const visitProfileButton = document.createElement('button');
+                visitProfileButton.classList.add('visit-profile-button');
+                visitProfileButton.textContent = 'Visit Profile';
+                visitProfileButton.onclick = function() {
+                    alert(`Name: ${currentUserProfile.name}`);
+                };
+
+                messageElement.appendChild(userElement);
+                messageElement.appendChild(imageElement);
+                messageElement.appendChild(timeElement);
+                messageElement.appendChild(visitProfileButton);
+
+                messagesContainer.appendChild(messageElement);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        // Bot Chat Functions
+        function toggleBotChat() {
+            const botChat = document.getElementById('botChat');
+            botChat.style.display = botChat.style.display === 'none' || botChat.style.display === '' ? 'block' : 'none';
+        }
+
+        function sendBotMessage() {
+            const botInput = document.getElementById('botInput');
+            const botMessages = document.getElementById('botMessages');
+
+            const userMessage = botInput.value.trim();
+
+            if (userMessage === '') return;
+
+            const userMessageElement = document.createElement('div');
+            userMessageElement.textContent = `You: ${userMessage}`;
+            userMessageElement.style.marginBottom = '10px';
+
+            botMessages.appendChild(userMessageElement);
+
+            const botResponseElement = document.createElement('div');
+            botResponseElement.textContent = `Bot: ${getBotResponse(userMessage)}`;
+            botResponseElement.style.marginBottom = '10px';
+
+            botMessages.appendChild(botResponseElement);
+            botMessages.scrollTop = botMessages.scrollHeight;
+
+            botInput.value = '';
+        }
+
+        function getBotResponse(message) {
+            // Simple bot logic
+            if (message.toLowerCase().includes('hello')) {
+                return 'Hi there! How can I assist you?';
+            } else if (message.toLowerCase().includes('help')) {
+                return 'Sure, let me know what you need help with!';
+            } else {
+                return 'I am here to help you!';
+            }
+        }
+    </script>
+</body>
+</html>
